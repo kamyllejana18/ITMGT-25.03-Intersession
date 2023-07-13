@@ -27,7 +27,7 @@ def savings(gross_pay, tax_rate, expenses):
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
 
-    tax = int(gross_pay * tax_rate)
+    tax = (gross_pay * tax_rate)
     net_pay=gross_pay-tax
     after_tax_pay = net_pay - expenses
     return int(after_tax_pay)
