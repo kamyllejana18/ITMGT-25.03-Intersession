@@ -45,15 +45,15 @@ def relationship_status(from_member, to_member, social_graph):
     print(f"to_member: {to_member}")
     print("social_graph: ",end="")
     
-    if from_member in social_graph[to_member]["following"]:
-        if to_member in social_graph[from_member]["following"]:
-            return "friends"
-        else:
-            return "follower"
-    elif to_member in social_graph[from_member]["following"]:
+    if from_member in social_graph[to_member]["following"] and to_member in social_graph[from_member]["following"]:
+        return "friends"
+    elif from_member in social_graph[to_member]["following"]:
         return "followed by"
+    elif to_member in social_graph[from_member]["following"]:
+        return "follower"
     else:
         return "no relationship"
+    return "no relationship"
 
 social_graph = {
     "@bongolpoc":{"first_name":"Joselito",
@@ -93,7 +93,7 @@ social_graph = {
     },
 }
 
-print(relationship_status("@bongolpoc", "@joeilagan", social_graph))
+print(relationship_status("@chums", "@joaquin", social_graph))
 
 
 def tic_tac_toe(board):
@@ -225,22 +225,32 @@ def eta(first_stop, second_stop, route_map):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    route = None
-    for key, value in route_map.items():
-        if first_stop == key[0] and second_stop == key[1]:
-            route = key
-            break
-
-    # If no route is found, return -1 to indicate an error
-    if route is None:
+    # check if the stop is in route_map
+    if first_stop not in [leg[0] for leg in route_map] or second_stop not in [leg[1] for leg in route_map]:
+        print("Error: Invalid start or end stop")
         return -1
 
-    # Calculate the total time to travel from first_stop to second_stop
-    total_time = route_map[route]["travel_time_mins"]
+    # calculate total travel time from first to second stop
+    total_time = 0
+    current_stop = first_stop
+    
+    while current_stop != second_stop:
+        #add travel time between stops
+        leg_found = False
+        for leg in route_map:
+            if leg[0] == current_stop:
+                total_time += route_map[leg]["travel_time_mins"]
+                current_stop = leg[1]
+                leg_found = True
+                break
+         #return error if stop is not in  route_map
+        if not leg_found:
+            print("Error: No route found between stops")
+            return -1
+
     return total_time
 
-
-legs = {
+route_map = {
      ("upd", "admu"): {
          "travel_time_mins": 10
      },
@@ -261,5 +271,6 @@ legs = {
     }
 }
 
-travel_time = eta("a2", "b1", legs)
-print(f"Travel time: {travel_time} minutes")
+travel_time = eta("upd", "dlsu", route_map)
+if travel_time != -1:
+    print(f"Travel time: {travel_time} minutes")
