@@ -27,10 +27,9 @@ def savings(gross_pay, tax_rate, expenses):
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
 
-    tax = int(gross_pay * tax_rate)
-    net_pay=gross_pay-tax
-    after_tax_pay = net_pay - expenses
-    return (after_tax_pay)
+    after_tax = int(gross_pay * (1 - tax_rate))
+    after_expenses = after_tax - expenses
+    return (after_expenses)
 
 money_remaining=savings(12000,0.2,32)
 print("Remaining money:", money_remaining,"centavos")
